@@ -1,13 +1,24 @@
 import {Request, Response} from 'express';
-import {CreateUserservice} from '../services/CreateUserService';
+import {CreateUserService} from '../services/CreateUserService';
+import { GetUserService } from '../services/GetUserService';
 
 class UserController {
-    async create(request:Request, response:Response) {
-        const userdata = request.body
-        
-        const createUser = new CreateUserservice()
+    async create(req:Request, res:Response) {
+        const userData = req.body;
 
-        const user = await createUser.execute(userdata);
+        const createUser = new CreateUserService();
+
+        const user = await createUser.execute(userData);
+
+        return res.json(user);
+    }
+
+    async show(request: Request, response:Response) {
+        const userData = request.body.user
+        
+        const getUser = new GetUserService();
+        
+        const user = await getUser.execute(userData);
 
         return response.json(user);
     }

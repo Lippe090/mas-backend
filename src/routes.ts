@@ -1,18 +1,24 @@
-import {Router, request, response, Response} from 'express';
+import {Router} from 'express'
 import {UserController} from './controller/UserController';
+import {CourseUnitController} from './controller/CourseUnitController';
+import {ActivyController} from './controller/ActiviController';
+import {AuthenticateController} from './controller/AuthenticateControler';
+import authenticated from './middlewares/authenticated';
 
-interface UserRequest {
-    name:string;
-    email:string;
-    password:string;
-}
-
-const userController = new UserController()
+const userController = new UserController();
+const courseUnitController = new CourseUnitController();
+const activyController = new ActivyController();
+const authenticateController = new AuthenticateController();
 
 const routes = Router();
 
-routes.post('/user', userController.create);
-routes.post('activy', () => console.log('Activy route'));
-routes.post('/courseuuit',()=> console.log('Course Unit route'));
+routes.post("/user", userController.create);
+routes.post("/auth", authenticateController.create);
+routes.get("/user", authenticated, userController.show);
+routes.get("/courseunit", authenticated, courseUnitController.show);
+routes.get("/activy", authenticated, activyController.show);
+routes.post("/courseunit", authenticated, courseUnitController.create);
+routes.post("/activy", authenticated, activyController.create);
+
 
 export default routes;
